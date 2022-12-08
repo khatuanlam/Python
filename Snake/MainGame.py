@@ -5,7 +5,8 @@ import os
 from Snake import Button
 
 pygame.init()
-os.environ['SDL_VIDEO_CENTERED'] = '1'  # this centers the window to the center of the user's screen
+# this centers the window to the center of the user's screen
+os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Color definitions
 white = (255, 255, 255)
@@ -112,13 +113,17 @@ def showScores(score, new):
     :param new:
     :return:
     """
-    screen_text = pygame.font.SysFont("comicsansms", 15).render("Score: " + str(score), True, black)
-    gameDisplay.blit(screen_text, (displayWidth - scoreOffsetX, scoreOffsetY + 20))
+    screen_text = pygame.font.SysFont("comicsansms", 15).render(
+        "Score: " + str(score), True, black)
+    gameDisplay.blit(screen_text, (displayWidth -
+                     scoreOffsetX, scoreOffsetY + 20))
 
-    high_score = pygame.font.SysFont("comicsansms", 15).render("High Score: " + str(highScore), True, black)
+    high_score = pygame.font.SysFont("comicsansms", 15).render(
+        "High Score: " + str(highScore), True, black)
 
     if new:
-        high_score = pygame.font.SysFont("comicsansms", 13).render("New High Score!", True, red)
+        high_score = pygame.font.SysFont(
+            "comicsansms", 13).render("New High Score!", True, red)
 
     gameDisplay.blit(high_score, (displayWidth - scoreOffsetX, scoreOffsetY))
 
@@ -155,16 +160,18 @@ def randomApple():
 
     goldenApple = generateGoldenApple()
 
-    randAppleX = round(random.randint(blockSize * 2, boundX - (blockSize * 4)) / blockSize) * blockSize
-    randAppleY = round(random.randint(blockSize * 2, boundY - (blockSize * 4)) / blockSize) * blockSize
+    randAppleX = round(random.randint(blockSize * 2, boundX -
+                       (blockSize * 4)) / blockSize) * blockSize
+    randAppleY = round(random.randint(blockSize * 2, boundY -
+                       (blockSize * 4)) / blockSize) * blockSize
 
     while [randAppleX, randAppleY] in snakeList or randAppleX == lastAppleX or randAppleY == lastAppleY or \
             (randAppleX >= scoreBoundWidth and randAppleY <= scoreBoundHeight):
         # if the apple generates under the snake or within the high score box, regenerate it
         randAppleX = round(random.randint(blockSize * 2, boundX - scoreBoundWidth - (blockSize * 4)) / blockSize) * \
-                     blockSize
+            blockSize
         randAppleY = round(random.randint(blockSize * 2, boundY - scoreBoundHeight - (blockSize * 4)) / blockSize) * \
-                     blockSize
+            blockSize
 
 
 def generateGoldenApple():
@@ -210,7 +217,8 @@ def put_message_custom(message, color, offsetY, fontSize=50):
     :param fontSize:
     :return:
     """
-    screen_text = pygame.font.SysFont("comicsansms", fontSize).render(message, True, color)
+    screen_text = pygame.font.SysFont(
+        "comicsansms", fontSize).render(message, True, color)
     gameDisplay.blit(screen_text, [centerDisplayWidth - (screen_text.get_rect().width / 2),
                                    (centerDisplayHeight - (screen_text.get_rect().height / 2) + offsetY)])
 
@@ -233,8 +241,10 @@ def fillBackground(isStartScreen):
     gameDisplay.fill(white, [blockSize, blockSize, boundX, boundY])
 
     if not isStartScreen:
-        gameDisplay.fill(black, [scoreBoundWidth, blockSize, displayWidth - 150, scoreBoundHeight])
-        gameDisplay.fill(white, [(scoreBoundWidth + blockSize, blockSize), (blockSize * 7, 100 - (blockSize * 2))])
+        gameDisplay.fill(
+            black, [scoreBoundWidth, blockSize, displayWidth - 150, scoreBoundHeight])
+        gameDisplay.fill(white, [
+                         (scoreBoundWidth + blockSize, blockSize), (blockSize * 7, 100 - (blockSize * 2))])
 
 
 def reset():
@@ -307,7 +317,8 @@ def gameLoop():
             fillBackground(False)
             showScores(appleCounter, highScore < appleCounter)
             put_message_center("Game Over!", red)
-            put_message_custom("Click to play again.", black, fontSize=30, offsetY=50)
+            put_message_custom("Click to play again.",
+                               black, fontSize=30, offsetY=50)
             pygame.display.update()
 
         for event in events:
@@ -360,7 +371,8 @@ def gameLoop():
         snakeList.append(snakeHead)  # add the snakeHead
         snake(snakeList)  # generate the snake
 
-        if len(snakeList) > appleCounter:  # delete the first element of the snakeList.
+        # delete the first element of the snakeList.
+        if len(snakeList) > appleCounter:
             del snakeList[0]
 
         with open('score.dat', 'rb') as fromFile:  # load high score
@@ -368,7 +380,8 @@ def gameLoop():
 
         showScores(appleCounter, highScore < appleCounter)
         pygame.display.update()
-        clock.tick(FPS + (appleCounter / 50))  # set FPS, scales with how many apples the user has
+        # set FPS, scales with how many apples the user has
+        clock.tick(FPS + (appleCounter / 50))
 
 
 def getCursorPos():
@@ -378,9 +391,11 @@ def getCursorPos():
 def isLeftMouseClicked():
     return pygame.mouse.get_pressed()[0]
 
+
 def __main__():
     while True:
         startScreen()
         gameLoop()
+
 
 __main__()
